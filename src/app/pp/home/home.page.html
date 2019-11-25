@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar style="padding-right: 20px">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Set IoT</ion-title>
+    <ion-button size="small" shape="round" color="mainS" slot="end"><ion-icon name="sync"></ion-icon></ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding>
+
+  <div class="wrap" padding>
+
+    <ion-button disabled color="light">connected</ion-button>
+    <ion-button color="mainS" (click)="openPopoverMd($event)">Motion Detector</ion-button><br>
+    <ion-button color="mainS" (click)="openPopoverTh($event)">Temperature / Humidity</ion-button><br>
+
+    <br>
+
+    <ion-button color="main" routerLink="/menu/jumper">Jumper Project</ion-button><br>
+    <ion-button color="main" routerLink="/menu/and-or">And/Or Project</ion-button><br>
+    <ion-button color="main" routerLink="/menu/block">Block Project</ion-button><br>
+
+    <ion-menu-toggle>
+      <ion-button color="main">Menu</ion-button>
+    </ion-menu-toggle>
+  </div>
+
+
+
+</ion-content>

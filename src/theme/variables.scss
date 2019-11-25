@@ -74,4 +74,24 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --ion-color-main: #B089D5;
+  --ion-color-main-rgb: 176, 137, 213;
+  --ion-color-main-contrast: #ffffff;
+  --ion-color-main-contrast-rgb: 255, 255, 255;
+  --ion-color-main-shade: #A37CB7;
+  --ion-color-main-tint: #B18AD6;
+
+  --ion-color-mainS: #D0A9F5;
+  --ion-color-mainS-rgb: 208, 169, 245;
+  --ion-color-mainS-contrast: #ffffff;
+  --ion-color-mainS-contrast-rgb: 255, 255, 255;
+  --ion-color-mainS-shade: #C39CD7;
+  --ion-color-mainS-tint: #D1AAF6;
+}
+
+ion-popover {
+  .popover-content {
+    --width: 95%;
+  }
 }
