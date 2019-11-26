@@ -4,7 +4,10 @@
             <ion-menu-button></ion-menu-button>
         </ion-buttons>
         <ion-title>Block project</ion-title>
-        <ion-button style="padding: 1px" size="small" color="mainS" slot="end"><ion-icon name="save"></ion-icon></ion-button>
+        <ion-button style="padding: 1px" size="small" color="mainS" slot="end"
+                    (click)="reconstructStatements()">Convert</ion-button>
+        <ion-button style="padding: 1px" size="small" color="mainS" slot="end"
+                    (click)="sendEvents()"><ion-icon name="save"></ion-icon></ion-button>
     </ion-toolbar>
 </ion-header>
 
@@ -31,6 +34,7 @@
               class="list_wrap">
         <div *ngFor="let item of listCustom" cdkDrag>
             <div class="drop_area_placeholder" *cdkDragPlaceholder></div>
+
             <ion-list class="drop_area" no-padding no-margin>
                 <ion-list-header color="mainS">
                     <ion-label>{{item.type}}</ion-label>
@@ -38,34 +42,62 @@
                         <ion-icon name="add"></ion-icon>
                     </div>
                 </ion-list-header>
+
                 <ion-item *ngFor="let con of item.conds">
+
                     <div style="min-width: 50%;">
-                        <ion-select (ionChange)="addSen($event,con)" placeholder="Sensor" okText="Select" cancelText="Dismiss">
+                        <ion-select (ionChange)="addSen($event,con)" placeholder="Sensor"
+                                    okText="Select" cancelText="Dismiss"
+                                    style="display: inline-flex">
                             <ion-select-option *ngFor="let sens of listSensor">{{sens.name}}</ion-select-option>
                         </ion-select>
                     </div>
+
                     <div *ngIf="con.hasOwnProperty('name')" [ngSwitch]="con.name">
                         <div *ngSwitchDefault>
                             <ion-row>
                                 <ion-col>
-                                    <ion-input (ionChange)="setRange($event,con,0)" no-padding required text-right placeholder="low" inputmode="numeric"></ion-input>
+                                    <ion-input (ionChange)="setRange($event,con,0, 0)" no-padding required text-right placeholder="low" inputmode="numeric"></ion-input>
                                 </ion-col>
                                 <ion-col>
-                                    <ion-input (ionChange)="setRange($event,con,1)" no-padding required text-right placeholder="high" inputmode="numeric"></ion-input>
+                                    <ion-input (ionChange)="setRange($event,con,0, 1)" no-padding required text-right placeholder="high" inputmode="numeric"></ion-input>
                                 </ion-col>
                             </ion-row>
                         </div>
-                        <div *ngSwitchCase="'Motion Detector'">
-                            <ion-toggle color="main" slot="end" checked></ion-toggle>
+
+                        <div *ngSwitchCase="'MotionDetector'">
+                            <ion-toggle color="main" slot="end" (ionChange)="setDigitalRange($event, con, 0)"></ion-toggle>
+                        </div>
+
+                        <div *ngSwitchCase="'TempHumi'">
+                            <ion-row>
+                                <ion-col>
+                                    <ion-input (ionChange)="setRange($event,con,0, 0)" no-padding required text-right placeholder="temp_low" inputmode="numeric"></ion-input>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-input (ionChange)="setRange($event,con,0, 1)" no-padding required text-right placeholder="temp_high" inputmode="numeric"></ion-input>
+                                </ion-col>
+                            </ion-row>
+                            <ion-row>
+                                <ion-col>
+                                    <ion-input (ionChange)="setRange($event,con,1, 0)" no-padding required text-right placeholder="humi_low" inputmode="numeric"></ion-input>
+                                </ion-col>
+                                <ion-col>
+                                    <ion-input (ionChange)="setRange($event,con,1, 1)" no-padding required text-right placeholder="humi_high" inputmode="numeric"></ion-input>
+                                </ion-col>
+                            </ion-row>
                         </div>
                     </div>
+
                 </ion-item>
+
                 <ion-list-header color="main">
                     <ion-label>Actions</ion-label>
                     <div class="button" (click)="add(item,1)">
                         <ion-icon name="add"></ion-icon>
                     </div>
                 </ion-list-header>
+
                 <ion-item *ngFor="let act of item.actions">
                     <div style="min-width: 50%;">
                         <ion-select (ionChange)="addOut($event,act)" placeholder="Sensor" okText="Select" cancelText="Dismiss">
@@ -77,21 +109,22 @@
                         <div *ngSwitchCase="'LED'">
                             <ion-row>
                                 <ion-col>
-                                    <ion-checkbox color="danger"></ion-checkbox>
+                                    <ion-checkbox color="danger" (ionChange)="setLedValue($event, act,0)"></ion-checkbox>
                                 </ion-col>
                                 <ion-col>
-                                    <ion-checkbox color="success"></ion-checkbox>
+                                    <ion-checkbox color="success" (ionChange)="setLedValue($event, act,1)"></ion-checkbox>
                                 </ion-col>
                                 <ion-col>
-                                    <ion-checkbox color="primary"></ion-checkbox>
+                                    <ion-checkbox color="primary" (ionChange)="setLedValue($event, act,2)"></ion-checkbox>
                                 </ion-col>
                             </ion-row>
                         </div>
                         <div *ngSwitchCase="'Sound'">
-                            <ion-toggle color="main" slot="end" checked></ion-toggle>
+                            <ion-toggle color="main" slot="end" (ionChange)="setLedValue($event, act,0)"></ion-toggle>
                         </div>
                     </div>
                 </ion-item>
+
             </ion-list>
         </div>
     </ion-list>
