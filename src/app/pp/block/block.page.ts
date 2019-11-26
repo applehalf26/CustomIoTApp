@@ -45,7 +45,7 @@ export class BlockPage implements OnInit {
 
   urlList = [
 
-  ]
+  ];
 
   constructor() {}
 
