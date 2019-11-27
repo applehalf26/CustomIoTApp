@@ -17,21 +17,21 @@ const routes: Routes = [
         loadChildren: '../home/home.module#HomePageModule'
       },
       {
-        path: 'jumper',
-        loadChildren: '../jumper/jumper.module#JumperPageModule'
-      },
-      {
         path: 'and-or',
         loadChildren: '../and-or/and-or.module#AndOrPageModule'
-      },
-      {
-        path: 'interrupt',
-        loadChildren: '../interrupt/interrupt.module#InterruptPageModule'
       },
       {
         path: 'block',
         loadChildren: '../block/block.module#BlockPageModule'
       }
+      // {
+      //   path: 'jumper',
+      //   loadChildren: '../jumper/jumper.module#JumperPageModule'
+      // },
+      // {
+      //   path: 'interrupt',
+      //   loadChildren: '../interrupt/interrupt.module#InterruptPageModule'
+      // }
     ]
   },
   {

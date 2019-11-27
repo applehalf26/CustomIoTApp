@@ -22,16 +22,10 @@ export class AndOrPage implements OnInit {
 
     listSensor = [
         {
-            sensor: 'motionD',
-            name: 'Motion Detector'
+            name: 'MotionDetector'
         },
         {
-            sensor: 'tempHumi',
-            name: 'Temperature'
-        },
-        {
-            sensor: 'tempHumi',
-            name: 'Humidity'
+            name: 'TempHumi'
         }
     ];
 
@@ -81,7 +75,6 @@ export class AndOrPage implements OnInit {
     addSen(ev, item) {
         const idx = this.listSensor.findIndex(x => x.name === ev.target.value);
         if (idx !== -1) {
-            item.sensor = this.listSensor[idx].sensor;
             item.name = this.listSensor[idx].name;
             item.range = [null, null];
         }

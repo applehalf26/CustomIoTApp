@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import {CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 import {last} from 'rxjs/operators';
 
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+
+// 전역변수, 전역메소드 쓸거임
+import { Global, NAME, MTYPE, AXIS } from '../../globals/global';
+
 @Component({
   selector: 'app-block',
   templateUrl: './block.page.html',
@@ -43,11 +49,7 @@ export class BlockPage implements OnInit {
 
   converted = false; // listCustom -> listFinal 변환 했는지 여부
 
-  urlList = [
-
-  ];
-
-  constructor() {}
+  constructor(public http: HttpClient) {}
 
   // 드래그앤 드롭으로 새로 추가하는 경우
   drop(event: CdkDragDrop<any>) {
@@ -163,13 +165,17 @@ export class BlockPage implements OnInit {
 
   // JSON 구조를 전달하기 위한 구조로 변경
   reconstructStatements() {
+    // 예외처리 : 헤더가 없는 경우
+    if (Global.headerInitalized === false) {
+      alert('헤더 정보가 없습니다');
+      return;
+    }
+
     // Deep Copy : listCustom -> listFinal
     this.listFinal = this.deepCopy(this.listCustom);
 
     // 1. range[4][2]를 range[2]로 조건 분리하면서 opt 추가
     this.convert1(this.listFinal);
-
-    // 마스터 모듈에 헤더 정보를 요청하여, 슬레이브 순서 받아오기
 
     // 2. name(string) -> sensor(int) 변환
     this.convert2(this.listFinal);
@@ -190,6 +196,9 @@ export class BlockPage implements OnInit {
 
     this.printCode();
     this.converted = true;
+
+    // 성공 알림
+    alert('Code Conversion Completed');
   }
 
   // JSON 치환 1
@@ -242,7 +251,52 @@ export class BlockPage implements OnInit {
   // name(string) -> sensor(int) 변환
   // 전제 조건 : 마스터 모듈에 헤더 정보를 요청하여 각 센서의 순서 받아야 함
   convert2(paramList) {
+    paramList.forEach( list => {
 
+      // 1. cond.name -> cond.sensor
+      if (list.hasOwnProperty('conds')) {
+        list.conds.forEach( cond => {
+
+          const nowSensorEnumNumber = Global.GetSensorNumber(cond.name);
+          cond.sensor = 0;  // init
+
+          if (Global.headerInitalized === true) {
+            Global.headers.forEach( header => {
+              if (header.name === nowSensorEnumNumber) {
+                cond.sensor = header.id;
+              }
+            });
+          }
+
+          if (cond.sensor === 0) {
+            console.log('ERROR : Sensor Is Missing - ', cond.name);
+          }
+          delete cond.name;
+        });
+      }
+
+      // 2. actions.name -> actions.sensor
+      if (list.hasOwnProperty('actions')) {
+        list.actions.forEach( action => {
+
+          const nowSensorEnumNumber = Global.GetSensorNumber(action.name);
+          action.sensor = 0;  // init
+
+          if (Global.headerInitalized === true) {
+            Global.headers.forEach( header => {
+              if (header.name === nowSensorEnumNumber) {
+                action.sensor = header.id;
+              }
+            });
+          }
+
+          if (action.sensor === 0) {
+            console.log('ERROR : Sensor Is Missing - ', action.name);
+          }
+          delete action.name;
+        });
+      }
+    });
   }
 
   // JSON 치환 3
@@ -280,7 +334,7 @@ export class BlockPage implements OnInit {
           const newType = 'ELSE-IF';
           const newConds = [
             {
-              name: paramList[i - 1].conds[j].name,
+              sensor: paramList[i - 1].conds[j].sensor,
               opt: paramList[i - 1].conds[j].opt,
               range: [0, 0]
             }
@@ -399,13 +453,6 @@ export class BlockPage implements OnInit {
     return target;
   }
 
-  deepCopyArray(srcArray, destArray) {
-    srcArray = [];
-    srcArray.forEach( e => {
-      destArray.push(e);
-    });
-  }
-
   printListCustom() {
     console.log('listCustom : ');
     console.log(this.listCustom);
@@ -423,15 +470,29 @@ export class BlockPage implements OnInit {
 
   // 이벤트 패킷 전송
   sendEvents() {
+
+    // 예외처리 : 헤더가 없는 경우
+    if (Global.headerInitalized === false) {
+      alert('Header Data Is Missing');
+      return;
+    }
+
     // 1. 변환 (변환하지 않았던 경우에만)
     if (this.converted === false) {
       this.reconstructStatements();
     }
 
     // 2. 전송
+    Global.httpAddEvent(this.http, this.code);
+
+    alert('Sending Event Completed');
+    console.log(this.code);
   }
 
+
+
   ngOnInit() {
+    this.converted = false;
   }
 
 }

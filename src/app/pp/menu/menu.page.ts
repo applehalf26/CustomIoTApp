@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {Router, RouterEvent} from '@angular/router';
 
+// 전역변수, 전역메소드 쓸거임
+import {Global, MODE} from '../../globals/global';
+
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.page.html',
@@ -15,24 +18,24 @@ export class MenuPage implements OnInit {
       icon: 'home'
     },
     {
-      title: 'Jumper Project',
-      url: '/menu/jumper',
-      icon: 'redo'
-    },
-    {
       title: 'And/Or Project',
       url: '/menu/and-or',
       icon: 'card'
     },
     {
-      title: 'Interrupt Project',
-      url: '/menu/interrupt',
-      icon: 'switch'
-    },
-    {
       title: 'Block Project',
       url: '/menu/block',
       icon: 'cube'
+    },
+    {
+      title: 'Jumper Project',
+      url: '/menu/jumper',
+      icon: 'redo'
+    },
+    {
+      title: 'Interrupt Project',
+      url: '/menu/interrupt',
+      icon: 'switch'
     }
   ];
 
@@ -45,6 +48,10 @@ export class MenuPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  checkMode() {
+    return Global.nowMode;
   }
 
 }
