@@ -4,7 +4,7 @@ import {MdPage} from '../pop/md/md.page';
 import {ThPage} from '../pop/th/th.page';
 import {SetIpPage} from '../set-ip/set-ip.page';
 
-// 전역변수, 전역메소드 쓸거임
+// 전역변수, 전역메소드
 import {Global, MODE, NAME} from '../../globals/global';
 // HTTP 통신
 import {HttpClient} from '@angular/common/http';

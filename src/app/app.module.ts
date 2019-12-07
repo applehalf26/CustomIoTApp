@@ -10,17 +10,23 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import {MdPageModule} from './pp/pop/md/md.module';
 import {ThPageModule} from './pp/pop/th/th.module';
+import {SetIpPageModule} from './pp/set-ip/set-ip.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
+// added
+import { HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,
-  MdPageModule, ThPageModule, BrowserAnimationsModule],
+  MdPageModule, ThPageModule, SetIpPageModule,
+  BrowserAnimationsModule,
+  HttpClientModule],  // added
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
   ],
   bootstrap: [AppComponent]
 })
